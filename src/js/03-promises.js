@@ -27,26 +27,21 @@ function getFormData(event){
   };
 }
 
+function loopPromises({delay, amount, step}){
+  for(let i = 0; i < amount; i += 1){
+    createPromise(i + 1, delay)
+    .then(({position, delay})=>{
+      Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`, congfNotify)
+    })
+    .catch(({position, delay})=>{
+      Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`, congfNotify)
+    });
+    delay += step;
+  }
+}
 
 form.addEventListener('submit', (event)=>{
   event.preventDefault();
-  
   const formData = getFormData(event);
-
-  let position = 1;
-
-  const intervalId = setInterval(()=>{
-  if(position === formData.amount){
-    clearInterval(intervalId);
-  }
-  createPromise(position, formData.delay)
-  .then(({position, delay})=>{
-    Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`, congfNotify)
-  })
-  .catch(({position, delay})=>{
-    Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`, congfNotify)
-  });
-  position += 1;
-  formData.delay += formData.step;
-}, 0);
+  loopPromises(formData);
 });
