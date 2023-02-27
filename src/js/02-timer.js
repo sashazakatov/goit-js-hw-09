@@ -14,7 +14,7 @@ const options = {
         if (time < 0){
             Notify.failure('Please choose a date in the future')
         }
-        if(time > 0){
+        if(time => 0){
             disabledButton();
         }
     },
@@ -67,8 +67,12 @@ disabledButton();
 
 const fp = flatpickr(refs.element, options);
 refs.button.addEventListener('click', ()=>{
-    setInterval(()=>{
+    const intervalId = setInterval(()=>{
         const time = fp.selectedDates[0].getTime() -  Date.now();
+        console.log(time)
+        if(time < 1000){
+            clearInterval(intervalId);
+        }
         updateTaimeraInterface(convertMs(time));
     }, 1000);
 });
