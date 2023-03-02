@@ -28,8 +28,8 @@ function getFormData(event){
 }
 
 function loopPromises({delay, amount, step}){
-  for(let i = 0; i < amount; i += 1){
-    createPromise(i + 1, delay)
+  for(let i = 1; i <= amount; i++){
+    createPromise(i, delay)
     .then(({position, delay})=>{
       Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`, congfNotify)
     })
